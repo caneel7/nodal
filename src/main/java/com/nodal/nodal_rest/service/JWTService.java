@@ -73,7 +73,7 @@ public class JWTService {
         return Jwts.parserBuilder()
                 .setSigningKey(secret)
                 .build()
-                .parseClaimsJwt(token)
+                .parseClaimsJws(token)
                 .getBody();
     }
 
