@@ -8,6 +8,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class CustomUserDetailService implements UserDetailsService {
 
@@ -23,12 +25,12 @@ public class CustomUserDetailService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
     {
         com.nodal.nodal_rest.model.User user = userRepository.findById(Integer.parseInt(username)).orElseThrow(() -> new UsernameNotFoundException("Cannot Find User"));
-        return new User(Integer.toString(user.getId()),user.getPassword(),null);
+        return new User(Integer.toString(user.getId()),user.getPassword(), List.of());
     }
 
     public UserDetails loadUserById(int id) throws UsernameNotFoundException
     {
         com.nodal.nodal_rest.model.User user = userRepository.findById(id).orElseThrow(()-> new UsernameNotFoundException("Cannot Find User"));
-        return new User(Integer.toString(user.getId()),user.getPassword(),null);
+        return new User(Integer.toString(user.getId()),user.getPassword(),List.of());
     }
 }

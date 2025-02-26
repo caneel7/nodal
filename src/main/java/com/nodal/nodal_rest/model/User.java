@@ -10,10 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name = "tenants")
+@Table(name = "users")
 @Getter
 @Setter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -44,9 +46,12 @@ public class User implements UserDetails {
     @Builder.Default
     private Date createdAt = new Date();
 
-    @Column(name = "udpated_at")
+    @Column(name = "updated_at")
     @Builder.Default
     private Date updatedAt = new Date();
+
+    @Transient
+    private String token;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -55,7 +60,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return "";
+        return this.password;
     }
 
     @Override
