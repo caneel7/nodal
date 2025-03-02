@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
-@Table(name = "user_calenders")
+@Table(name = "user_calendars")
 @Builder
 @Setter
 @Getter
@@ -21,13 +21,13 @@ public class UserCalender {
     private int id;
 
     @Column(name = "user_id")
-    private int user_id;
+    private int userId;
 
     @Column(name = "event_name")
     private String eventName;
 
     @Column(name = "event_duration")
-    private String eventDuration;
+    private int eventDuration;
 
     @Column(name = "event_location")
     private String eventLocation;
@@ -39,14 +39,15 @@ public class UserCalender {
     private String hostName;
 
     @Column(name = "start_date")
-    private LocalDateTime startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private LocalDateTime  endDate;
+    private Date endDate;
 
     @Column(name = "days")
     private int days;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "days_type")
     private DaysType daysType;
 
