@@ -51,7 +51,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
             userRepository.save(newUser);
 
-            return ResponseEntityBuilder.success(true,"Registered Successfully");
+            return ResponseEntityBuilder.created(true,"Registered Successfully");
 
         }catch (Exception e){
             return ResponseEntityBuilder.serverError(e.getMessage());

@@ -4,7 +4,6 @@ import com.nodal.nodal_rest.enums.DaysType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -14,7 +13,7 @@ import java.util.Date;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCalender {
+public class UserCalendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

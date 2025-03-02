@@ -25,7 +25,7 @@ public class UserScheduledAppointment {
 
     @ManyToOne
     @JoinColumn(name = "user_calendar_id", referencedColumnName = "id", foreignKey = @ForeignKey(name = "user_scheduled_appointments_user_calendar_id_fkey"))
-    private UserCalender userCalendar;
+    private UserCalendar userCalendar;
 
     @Column(name = "appointment_date")
     private LocalDate appointmentDate;

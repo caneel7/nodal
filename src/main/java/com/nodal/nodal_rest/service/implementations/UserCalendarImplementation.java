@@ -4,7 +4,7 @@ import com.nodal.nodal_rest.dto.ApiResponse;
 import com.nodal.nodal_rest.libs.CustomAuthenticationProvider;
 import com.nodal.nodal_rest.libs.ResponseEntityBuilder;
 import com.nodal.nodal_rest.model.User;
-import com.nodal.nodal_rest.model.UserCalender;
+import com.nodal.nodal_rest.model.UserCalendar;
 import com.nodal.nodal_rest.repository.UserCalendarRepository;
 import com.nodal.nodal_rest.service.UserCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,7 @@ public class UserCalendarImplementation implements UserCalendarService {
     private UserCalendarRepository userCalendarRepository;
 
     @Override
-    public ResponseEntity<ApiResponse<UserCalender>> createNewCalender(UserCalender body) {
+    public ResponseEntity<ApiResponse<UserCalendar>> createNewCalendar(UserCalendar body) {
 
         User user = authenticationProvider.getUser();
 
@@ -36,7 +36,7 @@ public class UserCalendarImplementation implements UserCalendarService {
 
         try{
 
-            UserCalender newCalendar = UserCalender.builder()
+            UserCalendar newCalendar = UserCalendar.builder()
                     .userId(user.getId())
                     .eventName(Optional.ofNullable(body.getEventName()).orElse("Event"))
                     .eventDuration(Optional.ofNullable(body.getEventDuration()).orElse(60))
@@ -56,9 +56,30 @@ public class UserCalendarImplementation implements UserCalendarService {
 
             userCalendarRepository.save(newCalendar);
 
-            return ResponseEntityBuilder.success(newCalendar,"User Calendar Created");
+            return ResponseEntityBuilder.created(newCalendar,"User Calendar Created");
         }catch (Exception e){
             return ResponseEntityBuilder.serverError(e.getMessage());
         }
+    }
+
+    public ResponseEntity<ApiResponse<UserCalendar>> updateCalendar(Integer id, UserCalendar body)
+    {
+
+        User user = authenticationProvider.getUser();
+
+        UserCalendar calendar = userCalendarRepository.findOneByIdAndUserId(id,user.getId());
+
+        if(calendar == null)
+            return ResponseEntityBuilder.notFound("Cannot Find User Calendar");
+
+        try{
+
+            UserCalendar savedCalendar = userCalendarRepository.save(body);
+
+            return ResponseEntityBuilder.success(savedCalendar,"User Calendar Updated");
+        }catch (Exception e){
+            return ResponseEntityBuilder.serverError(e.getMessage());
+        }
+
     }
 }

@@ -4,7 +4,7 @@ import com.nodal.nodal_rest.dto.ApiResponse;
 import com.nodal.nodal_rest.libs.CustomAuthenticationProvider;
 import com.nodal.nodal_rest.libs.ResponseEntityBuilder;
 import com.nodal.nodal_rest.model.User;
-import com.nodal.nodal_rest.model.UserCalender;
+import com.nodal.nodal_rest.model.UserCalendar;
 import com.nodal.nodal_rest.repository.UserCalendarRepository;
 import com.nodal.nodal_rest.service.UserCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,15 +25,21 @@ public class UserCalenderController {
     private UserCalendarRepository userCalendarRepository;
 
     @PostMapping()
-    public ResponseEntity<ApiResponse<UserCalender>> createNewCalendar(@RequestBody UserCalender body)
+    public ResponseEntity<ApiResponse<UserCalendar>> createNewCalendar(@RequestBody UserCalendar body)
     {
-        return userCalendarService.createNewCalender(body);
+        return userCalendarService.createNewCalendar(body);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<ApiResponse<List<UserCalender>>> getUserCalendarList()
+    public ResponseEntity<ApiResponse<List<UserCalendar>>> getUserCalendarList()
     {
         User user = authenticationProvider.getUser();
         return ResponseEntityBuilder.success(userCalendarRepository.getAllByUserId(user.getId()),"All User Calendars");
+    }
+
+    @PatchMapping("/{id}/update")
+    public ResponseEntity<ApiResponse<UserCalendar>> updateUserCalendar(@PathVariable Integer id, @RequestBody UserCalendar body)
+    {
+        return userCalendarService.updateCalendar(id,body);
     }
 }
