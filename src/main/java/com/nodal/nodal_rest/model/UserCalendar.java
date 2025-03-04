@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "user_calendars")
@@ -76,5 +77,8 @@ public class UserCalendar {
     @Column(name = "updated_at")
     @Builder.Default
     private Date updatedAt = new Date();
+
+    @OneToMany(mappedBy = "userCalendar", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<UserCalendarSlot> slots;
 
 }

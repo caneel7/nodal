@@ -1,6 +1,7 @@
 package com.nodal.nodal_rest.controller;
 
 import com.nodal.nodal_rest.dto.ApiResponse;
+import com.nodal.nodal_rest.dto.response.AvailableAppointmentDatesDTO;
 import com.nodal.nodal_rest.libs.CustomAuthenticationProvider;
 import com.nodal.nodal_rest.libs.ResponseEntityBuilder;
 import com.nodal.nodal_rest.model.User;
@@ -8,8 +9,11 @@ import com.nodal.nodal_rest.model.UserCalendar;
 import com.nodal.nodal_rest.repository.UserCalendarRepository;
 import com.nodal.nodal_rest.service.UserCalendarService;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.time.LocalDate;
 
 import java.util.List;
 
@@ -41,5 +45,14 @@ public class UserCalenderController {
     public ResponseEntity<ApiResponse<UserCalendar>> updateUserCalendar(@PathVariable Integer id, @RequestBody UserCalendar body)
     {
         return userCalendarService.updateCalendar(id,body);
+    }
+
+    @GetMapping("/public/{calendarId}/available-dates")
+    public ResponseEntity<ApiResponse<List<AvailableAppointmentDatesDTO>>> getAvailableDates
+            (@PathVariable Integer calendarId,
+             @RequestParam LocalDate startDate,
+             @RequestParam  LocalDate endDate)
+    {
+        return userCalendarService.getAvailableAppointmentDates(calendarId,startDate,endDate);
     }
 }
