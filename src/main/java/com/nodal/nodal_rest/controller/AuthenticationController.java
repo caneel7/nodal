@@ -25,7 +25,7 @@ public class AuthenticationController {
         return authenticationService.register(body);
     }
 
-    @PostMapping(value = "login")
+    @PostMapping(value = "/login")
     public ResponseEntity<ApiResponse<User>> login(@RequestBody UserRequestDTO body)
     {
         return authenticationService.login(body);
