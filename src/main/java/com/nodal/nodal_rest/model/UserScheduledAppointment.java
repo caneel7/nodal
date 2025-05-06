@@ -36,8 +36,17 @@ public class UserScheduledAppointment {
     @Column(name = "appointment_timezone")
     private String appointmentTimezone;
 
+    @Column(name = "utc_date")
+    private LocalDate utcDate;
+
+    @Column(name = "utc_time")
+    private LocalTime utcTime;
+
     @Column(name = "status")
     private String status;
+
+    @Column(name = "meeting_link")
+    private String meetingLink;
 
     @Column(name = "cancel_reason")
     private String cancelReason;

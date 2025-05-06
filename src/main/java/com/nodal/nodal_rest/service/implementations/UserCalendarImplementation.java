@@ -60,7 +60,10 @@ public class UserCalendarImplementation implements UserCalendarService {
                     .eventDuration(body.getEventDuration() != 0 ? body.getEventDuration() : 60)
                     .eventLocation(Optional.ofNullable(body.getEventLocation()).orElse("Online"))
                     .description(body.getDescription())
-                    .hostName(Optional.ofNullable(body.getHostName()).orElse(String.format("%s %s", user.getFirstName(), user.getLastName())))
+                    .hostName(
+                            Optional.ofNullable(body.getHostName())
+                                    .orElse(String.format("%s %s", user.getFirstName(), user.getLastName())
+                    ))
                     .startDate(body.getStartDate())
                     .endDate(body.getEndDate())
                     .days(body.getDays())
@@ -89,7 +92,8 @@ public class UserCalendarImplementation implements UserCalendarService {
 
         User user = authenticationProvider.getUser();
 
-        UserCalendar calendar = userCalendarRepository.findOneByIdAndUserId(id,user.getId());
+        UserCalendar calendar = userCalendarRepository.findOneByIdAndUserId(id,user.getId())
+                .orElseThrow(() -> new ResourceNotFoundException("Cannot Find Calendar"));
 
         if(calendar == null)
             return ResponseEntityBuilder.notFound("Cannot Find User Calendar");
@@ -105,7 +109,9 @@ public class UserCalendarImplementation implements UserCalendarService {
     }
 
     @Override
-    public ResponseEntity<ApiResponse<List<AvailableAppointmentDatesDTO>>> getAvailableAppointmentDates(Integer userCalendarId, LocalDate startDate, LocalDate endDate) {
+    public ResponseEntity<ApiResponse<List<AvailableAppointmentDatesDTO>>> getAvailableAppointmentDates(
+            Integer userCalendarId, LocalDate startDate, LocalDate endDate
+    ) {
 
         UserCalendar calendar = userCalendarRepository.findById(userCalendarId)
                 .orElseThrow(() -> new ResourceNotFoundException("Cannot Find User Calendar."));
@@ -121,7 +127,10 @@ public class UserCalendarImplementation implements UserCalendarService {
 
             Duration duration = Duration.between(slot.getStartTime(), slot.getEndTime());
 
-            maxMeetings.put(slot.getDay().toString().toUpperCase(),((int) duration.toMinutes() / calendar.getEventDuration()));
+            maxMeetings.put(
+                    slot.getDay().toString().toUpperCase(),
+                    ((int) duration.toMinutes() / calendar.getEventDuration()
+            ));
 
         });
 

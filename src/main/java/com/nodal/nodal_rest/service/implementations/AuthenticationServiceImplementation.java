@@ -2,6 +2,7 @@ package com.nodal.nodal_rest.service.implementations;
 
 import com.nodal.nodal_rest.dto.ApiResponse;
 import com.nodal.nodal_rest.dto.request.UserRequestDTO;
+import com.nodal.nodal_rest.exception.ResourceNotFoundException;
 import com.nodal.nodal_rest.libs.ResponseEntityBuilder;
 import com.nodal.nodal_rest.model.User;
 import com.nodal.nodal_rest.repository.UserRepository;
@@ -37,7 +38,7 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
             return ResponseEntityBuilder.badRequest("Please Provide Email And Password");
 
         try{
-            User foundUser = userRepository.findByEmail(user.getEmail());
+            User foundUser = userRepository.findByEmail(user.getEmail()).orElseThrow(() -> new ResourceNotFoundException("Cannot Find User"));
 
             if(foundUser != null)
                 return ResponseEntityBuilder.badRequest("User Already Exist");
@@ -65,10 +66,8 @@ public class AuthenticationServiceImplementation implements AuthenticationServic
 
         try{
 
-            User foundUser = userRepository.findByEmail(user.getEmail());
-
-            if(foundUser == null)
-                return ResponseEntityBuilder.notFound("Cannot Find User");
+            User foundUser = userRepository.findByEmail(user.getEmail())
+                    .orElseThrow(() -> new ResourceNotFoundException("Cannot Find User"));
 
             boolean passwordMatch = passwordEncoder.matches(user.getPassword(),foundUser.getPassword());
 
